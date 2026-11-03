@@ -1,0 +1,26 @@
+name: PostgreSQL integration tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: inventory_demo_test
+          POSTGRES_USER: demo
+          POSTGRES_PASSWORD: demo_local_only
+        ports: [5433:5432]
+        options: >-
+          --health-cmd "pg_isready -U demo -d inventory_demo_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: mvn --batch-mode verify

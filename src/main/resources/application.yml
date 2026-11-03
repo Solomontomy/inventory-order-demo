@@ -1,0 +1,14 @@
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  port: ${PORT:8080}
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/inventory_demo}
+    username: ${DB_USER:demo}
+    password: ${DB_PASSWORD:demo_local_only}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  sql:
+    init:
+      mode: never
